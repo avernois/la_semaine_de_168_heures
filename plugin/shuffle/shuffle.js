@@ -4,8 +4,9 @@ function Shuffled () {
 	options.keepFirsts = options.keepFirsts || 0;
 	options.keepLasts = options.keepLasts || 0;
 
-	console.log(options.keepFirsts);
-	console.log(options.keepLasts);
+	function getTotalHorizontalSlides() { 
+		return document.querySelector("div.slides").children.length || 0;
+	}
 
 	function shuffle(array) {
 		var currentIndex = array.length, temporaryValue, randomIndex ;
@@ -19,7 +20,7 @@ function Shuffled () {
 	}
 
 	var shuffled = [];
-	for (var i = 1 + options.keepFirsts; i != (Reveal.getTotalSlides() - options.keepLasts); ++i) shuffled.push(i)
+	for (var i = 1 + options.keepFirsts; i != (getTotalHorizontalSlides() - options.keepLasts); ++i) shuffled.push(i)
 	
 	shuffle(shuffled);
 
@@ -36,7 +37,17 @@ function Shuffled () {
 
 	this.next = function() {
 		currentIndex += 1;
-		Reveal.slide(shuffled[currentIndex]);
+		Reveal.slide(shuffled[currentIndex]);			
+	}
+
+	this.downOrNext = function() {
+		if (Reveal.availableRoutes().down) {
+			var indices = Reveal.getIndices();
+			Reveal.slide(indices.h, indices.v + 1);
+		} else {
+			currentIndex += 1;
+			Reveal.slide(shuffled[currentIndex]);			
+		}
 	}
 
 	this.previous = function () {
@@ -55,7 +66,7 @@ Reveal.configure({
 				shuffled.next();
 			},
 		32: function() { // space
-				shuffled.next();
+				shuffled.downOrNext();
 			},
 		37: function() { // left
 				shuffled.previous();
