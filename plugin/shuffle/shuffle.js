@@ -28,7 +28,7 @@ function Shuffled () {
 		shuffled.unshift(i);
 	}
 
-	for (var i = Reveal.getTotalSlides() - options.keepLasts; i != Reveal.getTotalSlides(); i++) {
+	for (var i = getTotalHorizontalSlides() - options.keepLasts; i != getTotalHorizontalSlides(); i++) {
 		shuffled.push(i);
 	}
 
@@ -37,6 +37,7 @@ function Shuffled () {
 
 	this.next = function() {
 		currentIndex += 1;
+		console.log(currentIndex + " " + shuffled[currentIndex] + " " + shuffled);
 		Reveal.slide(shuffled[currentIndex]);			
 	}
 
